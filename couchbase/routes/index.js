@@ -4,11 +4,11 @@ var poolModule = require('generic-pool');
 var couchbase = require('couchbase');
 
 var db_username = 'Administrator';
-var db_password = '';
+var db_password = 'qwertyuiop';
 var db_bucket = 'default';
 
 
-var cluster = new couchbase.Cluster('couchbase://127.0.0.1');
+var cluster = new couchbase.Cluster('couchbase://10.1.201.133');
 var cm = cluster.manager(db_username, db_password);
 cm.listBuckets(function(err, list){
   var bucketExist = false;
@@ -25,15 +25,15 @@ cm.listBuckets(function(err, list){
 var pool = poolModule.Pool({
   name        : 'db',
   create      : function(callback) {
-    var cluster = new couchbase.Cluster('couchbase://127.0.0.1');
+    var cluster = new couchbase.Cluster('couchbase://10.1.201.133');
     var bucket = cluster.openBucket(db_bucket);
     callback(null, bucket);
   },
   destroy     : function(client) {
     client.disconnect();
   },
-  max         : 50,
-  min         : 10
+  max         : 200,
+  min         : 200
 });
 
 var counter = 0;
@@ -55,8 +55,10 @@ router.get('/create', function(req, res, next) {
 
 router.get('/read', function(req, res, next) {
   pool.acquire(function(err, client){
-    res.send("OK");
-    pool.release(client);
+    client.get('1438137666606', function(err, ret){
+      res.send(ret);
+      pool.release(client);
+    });
   });
 });
 
