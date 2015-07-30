@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
 router.get('/create', function(req, res, next) {
   pool.acquire(function(err, client){
     var id = new Date().getTime();
-    client.query('INSERT INTO `benchdb`.`benchdb` (`id`, `name`, `sex`, `phone`) VALUES (NULL, \'kevin\', \'0\', \''+id + '\');', function(err, ret) {
+    client.query('INSERT INTO `benchdb`.`user` (`id`, `name`, `sex`, `phone`) VALUES (NULL, \'kevin\', \'0\', \''+id + '\');', function(err, ret) {
       //console.log('The solution is: ', rows);
       res.send(ret);
       pool.release(client);
@@ -40,7 +40,7 @@ router.get('/create', function(req, res, next) {
 
 router.get('/read', function(req, res, next) {
   pool.acquire(function(err, client){
-    client.query('SELECT * FROM `test` WHERE `phone` = \'1438141448960\'', function(err, rows, fields) {
+    client.query('SELECT * FROM `user` WHERE `phone` = \'1438161116849\'', function(err, rows, fields) {
       //console.log('The solution is: ', rows);
       res.send(rows);
       pool.release(client);

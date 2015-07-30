@@ -32,8 +32,9 @@ var pool = poolModule.Pool({
   destroy     : function(client) {
     client.disconnect();
   },
-  max         : 200,
-  min         : 200
+  max         : 100,
+  min         : 100,
+  refreshIdle : false
 });
 
 var counter = 0;
